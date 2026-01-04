@@ -1,0 +1,16 @@
+// configuation file that you can use in your platform like kiro-cli | User → kiro-cli (platform) → Agent Configuration → Tools & MCP Servers → External Systems
+{
+  "name": "weather",
+  "description": "Weather agent with access to weather forecast and alerts",
+  "tools": [
+    "*"
+  ],
+  "mcpServers": {
+    "weather": {
+      "command": "uv",
+      "args": ["run", "weather.py"],
+      "cwd": "/Users/changshuoyuan/Desktop/src/weather"
+    }
+  },
+  "allowedTools": ["@weather/get_forecast", "@weather/get_alerts"]
+}
