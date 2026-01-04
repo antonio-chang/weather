@@ -1,6 +1,6 @@
 # MCP Server Setup with Python & Kiro CLI
 
-A guide to setting up Model Context Protocol (MCP) servers with Python virtual environments and configuring them with Kiro CLI.
+A guide to setting up Model Context Protocol (MCP) servers with Python virtual environments and configuring them with Kiro CLI. Includes MCP I/O logging for debugging and monitoring.
 
 ## Prerequisites
 
@@ -70,8 +70,8 @@ Create an agent configuration file `agents/weather.json`:
   ],
   "mcpServers": {
     "weather": {
-      "command": "uv",
-      "args": ["run", "weather.py"],
+      "command": "python3",
+      "args": ["mcp_logger.py", "uv", "run", "weather.py"],
       "cwd": "/path/to/your/weather/project"
     }
   },
@@ -81,13 +81,48 @@ Create an agent configuration file `agents/weather.json`:
 
 **Important**: Update the `cwd` path to match your actual project location.
 
-### 5. Use the Agent
+### 5. MCP I/O Logging (Optional)
+
+The project includes `mcp_logger.py` for debugging MCP communication:
+
+- **Purpose**: Logs all input/output between Kiro CLI and your MCP server
+- **Log file**: `mcp_io.log` (created automatically)
+- **Usage**: Already configured in the agent JSON above
+- **Log format**: 
+  - `输入:` prefix for input to MCP server
+  - `输出:` prefix for output from MCP server
+  - `STDERR:` prefix for error messages
+
+To disable logging, change the agent configuration to:
+```json
+"command": "uv",
+"args": ["run", "weather.py"]
+```
+
+### 6. Use the Agent
 
 ```bash
 # Start Kiro CLI with the weather agent
-kiro-cli chat --agent agents/weather.json
+kiro-cli  # start Kiro chat
+/agent swap weather # switch to weather agent
+/mcp # list loaded mcp servers
 
 # Your MCP tools are now available in the chat
+```
+
+## Project Structure
+
+```
+weather/
+├── agents/
+│   └── weather.json          # Kiro CLI agent configuration
+├── images/
+│   ├── Chart.jpg            # Project documentation images
+│   └── Diagram.jpg
+├── mcp_logger.py            # MCP I/O logging wrapper
+├── mcp_io.log              # MCP communication logs (auto-generated)
+├── weather.py              # Main MCP server
+└── README.md
 ```
 
 ## Dependencies Used
@@ -112,3 +147,5 @@ kiro-cli chat --agent agents/weather.json
 - Check dependencies are installed correctly with `uv pip list`
 - Verify the `cwd` path in `weather.json` is correct
 - Make sure `weather.py` is executable
+- Check `mcp_io.log` for MCP communication issues
+- If logging causes issues, disable it by removing `mcp_logger.py` from the command chain
