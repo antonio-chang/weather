@@ -2,6 +2,8 @@
 
 A guide to setting up Model Context Protocol (MCP) servers with Python virtual environments and configuring them with Kiro CLI. Includes MCP I/O logging for debugging and monitoring.
 
+> **Note**: This weather agent serves as a practical example of how to add custom agents to kiro-cli. While you can also configure MCP servers globally in `~/.kiro/settings/` for system-wide access, this project demonstrates the agent-specific approach for more targeted functionality.
+
 ## Prerequisites
 
 - Python 3.8+
